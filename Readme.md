@@ -28,3 +28,24 @@ protected void configure(HttpSecurity http) throws Exception() {
 ### 2. UsernamePasswordAuthenticationFilter
 
 ![](./readmeImg/AuthenticationFlow.png)
+![](./readmeImg/usernamepassword_flow.png)
+
+### 3. Logout
+  - Session 무효화, 인증토큰 삭제, 쿠키정보 삭제, 로그인 페이지로 Redirect(Default 설정)
+  - Spring Security는 Logout 처리를 할 때 원칙적으로 POST 방식으로 처리
+    - GET은 오류
+    - Custom 설정을 통해 GET 방식으로 변경할 수 있음
+
+### 3-1. Logout Method
+```java
+protected void configure(HttpSecurity http) throws Exception {
+    http.logout()                                     // 로그아웃 처리  
+      .logoutUrl("/logout")                           // 로그아웃 처리 URL 
+      .logoutSuccessUrl("/login")                     // 로그아웃 성공 후 이동 페이지
+      .deleteCookies("JSESSIONID", "remember-me")     // 로그아웃 후 쿠키 삭제 
+      .addLogoutHandler(logoutHandler())              // 로그아웃 핸들러
+      .logoutSuccessHandler(logoutSuccessHandler())   // 로그아웃 성공 후 핸들러
+}
+```
+
+![](./readmeImg/logout_flow.png)
